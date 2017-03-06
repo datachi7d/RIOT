@@ -4,7 +4,7 @@ include $(PKG_BUILDDIR)/core/src/common/Makefile.common
 include $(PKG_BUILDDIR)/core/src/erbium/Makefile.erbium
 
 %.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -DLWM2M_CLIENT -c -o $@ $(@:o=c)
+	$(CC) $(CFLAGS) $(INCLUDES) -DRIOT -DLWM2M_CLIENT -c -o $@ $(@:o=c)
 
 AwaLWM2M.a: $(addprefix $(PKG_BUILDDIR)/core/src/common/,$(common_src:c=o)) $(addprefix $(PKG_BUILDDIR)/core/src/client/,$(client_src:c=o)) $(addprefix $(PKG_BUILDDIR)/core/src/erbium/,$(erbium_src:c=o))
 	$(AR) cr  $(BINDIR)/AwaLWM2M.a $^
