@@ -1,1 +1,4 @@
 INCLUDES += -I$(BINDIRBASE)/pkg/$(BOARD)/AwaLWM2M/api/include
+INCLUDES += -I$(BINDIRBASE)/pkg/$(BOARD)/AwaLWM2M/core/src/client
+INCLUDES += -I$(BINDIRBASE)/pkg/$(BOARD)/AwaLWM2M/core/src/common
+INCLUDES += -I$(BINDIRBASE)/pkg/$(BOARD)/AwaLWM2M/core/src/erbium
