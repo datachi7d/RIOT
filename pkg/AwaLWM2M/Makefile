@@ -8,6 +8,9 @@ PKG_LICENSE=BSD-3-Clause
 all: git-download 
 	$(MAKE) -C $(RIOTBASE)/pkg/AwaLWM2M/src PKG_BUILDDIR=$(PKG_BUILDDIR) BINDIR=$(BINDIR)
 
+clean::
+	$(MAKE) -C $(RIOTBASE)/pkg/AwaLWM2M/src PKG_BUILDDIR=$(PKG_BUILDDIR) BINDIR=$(BINDIR) clean
+
 
 include $(RIOTBASE)/pkg/pkg.mk
 
