@@ -1,6 +1,6 @@
 PKG_NAME=AwaLWM2M
 PKG_URL=git@github.com:datachi7d/AwaLWM2M.git
-PKG_VERSION=riot_testing
+PKG_VERSION=fix-RIOT
 PKG_LICENSE=BSD-3-Clause
 
 .PHONY: all
