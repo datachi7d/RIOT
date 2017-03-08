@@ -25,29 +25,14 @@
 
 int main(void)
 {
-    AwaFactoryBootstrapInfo bootstrapinfo;
     AwaStaticClient * awaClient = AwaStaticClient_New();
 
     AwaStaticClient_SetLogLevel(AwaLogLevel_Debug);
     AwaStaticClient_SetEndPointName(awaClient, "AwaStaticClient1");
     AwaStaticClient_SetCoAPListenAddressPort(awaClient, "::", 6000);
-    AwaStaticClient_SetBootstrapServerURI(awaClient, "");
+    AwaStaticClient_SetBootstrapServerURI(awaClient, "coap://[2001:1418:0100::1]:15683");
 
     AwaStaticClient_Init(awaClient);
-
-    sprintf(bootstrapinfo.SecurityInfo.ServerURI, "%s", "coap://[::1]:5683");
-    bootstrapinfo.SecurityInfo.SecurityMode = AwaSecurityMode_NoSec;
-    sprintf(bootstrapinfo.SecurityInfo.PublicKeyOrIdentity, "[PublicKey]");
-    sprintf(bootstrapinfo.SecurityInfo.SecretKey, "[SecretKey]");
-
-    bootstrapinfo.ServerInfo.Lifetime = 60;
-    bootstrapinfo.ServerInfo.DefaultMinPeriod = 1;
-    bootstrapinfo.ServerInfo.DefaultMaxPeriod = -1;
-    bootstrapinfo.ServerInfo.DisableTimeout = 86400;
-    bootstrapinfo.ServerInfo.Notification = false;
-    sprintf(bootstrapinfo.ServerInfo.Binding, "U");
-
-    AwaStaticClient_SetFactoryBootstrapInformation(awaClient, &bootstrapinfo);
 
     while (1)
     {
