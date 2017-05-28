@@ -20,34 +20,18 @@
  * @author      Vincent Dupont <vincent@otakeys.com>
  */
 
-#ifndef BOARD_H_
-#define BOARD_H_
+#ifndef BOARD_H
+#define BOARD_H
+
+#include "board_common.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/**
- * @name Macros for controlling the on-board LED.
- * @{
- */
-#define LED0_PIN            GPIO_PIN(PORT_B, 3)
-
-#define LED0_MASK           (1 << 3)
-
-#define LED0_ON             (GPIOB->BSRR     = LED0_MASK)
-#define LED0_OFF            (GPIOB->BRR      = LED0_MASK)
-#define LED0_TOGGLE         (GPIOB->ODR     ^= LED0_MASK)
-/** @} */
-
-/**
- * @brief   Initialize board specific hardware, including clock, LEDs and std-IO
- */
-void board_init(void);
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* BOARD_H_ */
+#endif /* BOARD_H */
 /** @} */

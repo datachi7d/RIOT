@@ -174,6 +174,26 @@ static const spi_conf_t spi_config[] = {
         .af       = GPIO_AF5,
         .rccmask  = RCC_APB2ENR_SPI1EN,
         .apbbus   = APB2
+    },
+    {
+        .dev      = SPI2,
+        .mosi_pin = GPIO_PIN(PORT_B, 15),
+        .miso_pin = GPIO_PIN(PORT_B, 14),
+        .sclk_pin = GPIO_PIN(PORT_B, 13),
+        .cs_pin   = GPIO_PIN(PORT_B, 12),
+        .af       = GPIO_AF5,
+        .rccmask  = RCC_APB1ENR_SPI2EN,
+        .apbbus   = APB1
+    },
+    {
+        .dev      = SPI3,
+        .mosi_pin = GPIO_PIN(PORT_C, 12),
+        .miso_pin = GPIO_PIN(PORT_C, 11),
+        .sclk_pin = GPIO_PIN(PORT_C, 10),
+        .cs_pin   = GPIO_UNDEF,
+        .af       = GPIO_AF6,
+        .rccmask  = RCC_APB1ENR_SPI3EN,
+        .apbbus   = APB1
     }
 };
 
@@ -188,7 +208,7 @@ static const spi_conf_t spi_config[] = {
 #define I2C_NUMOF           (1U)
 #define I2C_0_EN            1
 #define I2C_IRQ_PRIO        1
-#define I2C_APBCLK          (42000000U)
+#define I2C_APBCLK          (CLOCK_APB1)
 
 /* I2C 0 device configuration */
 #define I2C_0_DEV           I2C1
@@ -211,9 +231,23 @@ static const spi_conf_t spi_config[] = {
 
 /**
  * @name   ADC configuration
+ *
+ * Note that we do not configure all ADC channels,
+ * and not in the STM32F401 order.  Instead, we
+ * just define 6 ADC channels, for the Nucleo
+ * Arduino header pins A0-A5
+ *
  * @{
  */
-#define ADC_NUMOF          (0)
+#define ADC_NUMOF          (6U)
+#define ADC_CONFIG {             \
+    {GPIO_PIN(PORT_A, 0), 0, 0}, \
+    {GPIO_PIN(PORT_A, 1), 0, 1}, \
+    {GPIO_PIN(PORT_A, 4), 0, 4}, \
+    {GPIO_PIN(PORT_B, 0), 0, 8}, \
+    {GPIO_PIN(PORT_C, 1), 0, 11}, \
+    {GPIO_PIN(PORT_C, 0), 0, 10}, \
+}
 /** @} */
 
 /**

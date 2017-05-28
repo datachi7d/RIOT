@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Simon Brummer
+ * Copyright (C) 2015-2017 Simon Brummer
  *
  * This file is subject to the terms and conditions of the GNU Lesser
  * General Public License v2.1. See the file LICENSE in the top level
@@ -11,41 +11,30 @@
  * @{
  *
  * @file
- * @brief       GNRC's TCP option handling related functions
+ * @brief       Implementation of internal/option.h
  *
- * @author      Simon Brummer <brummer.simon@googlemail.com>
+ * @author      Simon Brummer <simon.brummer@posteo.de>
  * @}
  */
-#include "assert.h"
+#include "internal/common.h"
 #include "internal/option.h"
 
 #define ENABLE_DEBUG (0)
 #include "debug.h"
 
-uint32_t _option_build_mss(uint16_t mss)
+int _option_parse(gnrc_tcp_tcb_t *tcb, tcp_hdr_t *hdr)
 {
-    return (((uint32_t )TCP_OPTION_KIND_MSS) << 24) | (((uint32_t) TCP_OPTION_LENGTH_MSS) << 16) | mss;
-}
-
-uint16_t _option_build_offset_control(uint16_t nopts, uint16_t ctl)
-{
-    assert(TCP_HDR_OFFSET_MIN <= nopts && nopts <= TCP_HDR_OFFSET_MAX);
-    return (nopts << 12) | ctl;
-}
-
-int _option_parse(gnrc_tcp_tcb_t* tcb, tcp_hdr_t *hdr)
-{
-    /* Extract Offset value. Return if no options are set */
+    /* Extract offset value. Return if no options are set */
     uint8_t offset = GET_OFFSET(byteorder_ntohs(hdr->off_ctl));
     if (offset <= TCP_HDR_OFFSET_MIN) {
         return 0;
     }
 
-    /* Get Pointer to option field and field-size */
+    /* Get pointer to option field and field size */
     uint8_t *opt_ptr = (uint8_t *) hdr + sizeof(tcp_hdr_t);
     uint8_t opt_left = (offset - TCP_HDR_OFFSET_MIN) * 4;
 
-    /* Parse Options via tcp_hdr_opt_t */
+    /* Parse options via tcp_hdr_opt_t */
     while (opt_left > 0) {
         tcp_hdr_opt_t *option = (tcp_hdr_opt_t *) opt_ptr;
 

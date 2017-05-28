@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Simon Brummer
+ * Copyright (C) 2015-2017 Simon Brummer
  *
  * This file is subject to the terms and conditions of the GNU Lesser
  * General Public License v2.1. See the file LICENSE in the top level
@@ -9,65 +9,69 @@
 /**
  * @defgroup    net_gnrc_tcp TCP
  * @ingroup     net_gnrc
- * @brief       RIOT's tcp implementation for the gnrc stack
+ * @brief       RIOT's TCP implementation for the GNRC network stack.
  *
  * @{
  *
  * @file
- * @brief      Defines and Macros for TCP option handling
+ * @brief       TCP option handling declarations.
  *
- * @author     Simon Brummer <brummer.simon@googlemail.com>
+ * @author      Simon Brummer <simon.brummer@posteo.de>
  */
 
-#ifndef GNRC_TCP_INTERNAL_OPTION_H_
-#define GNRC_TCP_INTERNAL_OPTION_H_
+#ifndef OPTION_H
+#define OPTION_H
 
-#include "helper.h"
+#include <stdint.h>
+#include "assert.h"
 #include "net/tcp.h"
-#include "net/gnrc/tcp.h"
+#include "net/gnrc/tcp/tcb.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * @brief Extract offset value from offet and ctl bit field.
+ * @brief Helper function to build the MSS option.
+ *
+ * @param[in] mss   MSS value that should be set.
+ *
+ * @returns   MSS option value.
  */
-#define GET_OFFSET( x ) (((x) & MSK_OFFSET) >> 12)
+inline static uint32_t _option_build_mss(uint16_t mss)
+{
+    return (((uint32_t) TCP_OPTION_KIND_MSS << 24) |
+            ((uint32_t) TCP_OPTION_LENGTH_MSS << 16) | mss);
+}
 
 /**
- * @brief Helper Function to build the MSS Option
+ * @brief Helper function to build the combined option and control flag field.
  *
- * @param[in]  mss   tcp header to be checked
+ * @param[in]  nopts   Number of options.
+ * @param[in]  ctl     Control flag field.
  *
- * @return   Valid MSS Option.
+ * @returns   Bitfield with encoded control bits and number of options.
  */
-uint32_t _option_build_mss(uint16_t mss);
+inline static uint16_t _option_build_offset_control(uint16_t nopts, uint16_t ctl)
+{
+    assert(TCP_HDR_OFFSET_MIN <= nopts && nopts <= TCP_HDR_OFFSET_MAX);
+    return (nopts << 12) | ctl;
+}
 
 /**
- * @brief Helper Function to build the combined option and control flag field
+ * @brief Parses options of a given TCP header.
  *
- * @param[in]  nopts   Number of Options
- * @param[in]  ctl     Control Flags
+ * @param[in,out] tcb   TCB holding the connection information.
+ * @param[in]     hdr   TCP header to be parsed.
  *
- * @return   Valid option size and control field.
+ * @returns   Zero on success.
+ *            Negative value on error.
  */
-uint16_t _option_build_offset_control(uint16_t nopts, uint16_t ctl);
-
-/**
- * @brief Parses options of a given tcp-header pktsnip.
- *
- * @param[out] tcb   transmission control block to memorize options.
- * @param[in]  hdr   tcp header to be checked
- *
- * @return   Zero on success
- * @return   A negative value on error
- */
-int _option_parse(gnrc_tcp_tcb_t* tcb, tcp_hdr_t *hdr);
+int _option_parse(gnrc_tcp_tcb_t *tcb, tcp_hdr_t *hdr);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* GNRC_TCP_INTERNAL_OPTION_H_*/
+#endif /* OPTION_H */
 /** @} */
