@@ -1,5 +1,7 @@
 ifneq (,$(filter AwaLWM2M,$(USEPKG)))
     USEMODULE += posix_sockets
     USEMODULE += gnrc_sock_udp
+    USEMODULE += sock_dns
+    USEMODULE += sock_util
     USEMODULE += random
 endif

@@ -11,8 +11,8 @@ AwaLWM2M.a: $(addprefix $(PKG_BUILDDIR)/core/src/common/,$(common_src:c=o)) $(ad
 
 all: AwaLWM2M.a
 
-clean: $(addprefix $(PKG_BUILDDIR)/core/src/common/,$(common_src:c=o)) $(addprefix $(PKG_BUILDDIR)/core/src/client/,$(client_src:c=o)) $(addprefix $(PKG_BUILDDIR)/core/src/erbium/,$(erbium_src:c=o))
-	rm -f $^
+clean: 
+	rm -f $(addprefix $(PKG_BUILDDIR)/core/src/common/,$(common_src:c=o)) $(addprefix $(PKG_BUILDDIR)/core/src/client/,$(client_src:c=o)) $(addprefix $(PKG_BUILDDIR)/core/src/erbium/,$(erbium_src:c=o))
 	rm -f $(BINDIR)/AwaLWM2M.a
 
 	
